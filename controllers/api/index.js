@@ -8,5 +8,5 @@ api
 
 
 // No routes hit?
-api.use((req, res) => res.status(404).end());
+
 module.exports = api;
