@@ -17,7 +17,7 @@ class Gallery extends Component {
 
   componentDidMount() {
   
-    fetch('http://localhost:3001/api/item')
+    fetch('/api/item')
       .then(res => res.json())
       .then(perfumes => {
         console.log(perfumes);

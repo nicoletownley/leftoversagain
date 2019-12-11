@@ -9,7 +9,7 @@ import Gallery from './components/Perfumes/Gallery';
 import NotFound from './components/NotFound/NotFound';
 import AddPerfume from './components/Perfumes/AddPerfume';
 import {BrowserRouter as Router, Switch, Route, Link,withRouter} from 'react-router-dom';
-let path = require('path');
+import 'semantic-ui-css/semantic.min.css';
 
 class App extends Component {
 
@@ -19,7 +19,7 @@ class App extends Component {
     const userId = localStorage.getItem('id')
     if(userId) {
       console.log(userId)
-      fetch(`http://localhost:3001/api/user/${userId}`)
+      fetch(`/api/user/${userId}`)
         .then(res => res.json())
         .then(user => {
           this.setState({ user: user });

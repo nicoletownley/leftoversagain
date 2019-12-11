@@ -20,7 +20,7 @@ class Login extends Component {
   onSubmit = (e) => {
     console.log('??')
     
-    fetch('http://localhost:3001/api/user/login', {
+    fetch('/api/user/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

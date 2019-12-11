@@ -28,7 +28,7 @@ class AddPerfume extends Component {
   handleChange = (e, { name, value }) => this.setState({[name]: value })
   onSubmit = (e) => {
 
-    fetch('http://localhost:3001/api/item/', {
+    fetch('/api/item/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
