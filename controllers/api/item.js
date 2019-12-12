@@ -6,7 +6,7 @@ const Item = require('../../models/Item.js');
 router.get('/', (req, res) => {
   Item.find({})
     .then(items => {
-      console.log(items);
+
       res.json(items)
     })
 })
@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
 router.get('/item/:id', (req, res) => {
   Item.find({ _id: req.params.id })
     .then(item => {
-      console.log(item);
+
       res.json(item);
     })
 })

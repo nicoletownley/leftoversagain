@@ -8,18 +8,18 @@ const User = require('../../models/User');  // User is our collection
 
 
 
-router.get('/:id', (req, res) => {
-  User.findById(req.params.id)
-    .then(user => {
-      console.log(user);
-      res.json(user);
-    })
-    .catch(err => console.log(err))
-})
+// router.get('/:id', (req, res) => {
+//   User.findById(req.params.id)
+//     .then(user => {
+//       console.log(user);
+//       res.json(user);
+//     })
+//     .catch(err => console.log(err))
+// })
 
 // Route to sign them up
-router.post('/signup', (req, res) => {
-  // Grab all the information from the signup form
+router.post('/signup', (req, res, next) => {
+  // Grab all the information from the s  ignup form
   const email = req.body.email;
   const password = req.body.password;
   console.log(req.body);
@@ -30,14 +30,14 @@ router.post('/signup', (req, res) => {
     
   })
   .then(user => {
-    res.json(user);
+    req.login(user, err => (err ? next(err) : res.json(user)));
   })
   .catch(err => console.log(err));
 
 })
 
 // Route to login them in
-router.post('/login', (req, res) => {
+router.post('/login', (req, res, next) => {
   // Grab all the information from the signup form
   const email = req.body.email;
   const password = req.body.password;
@@ -53,11 +53,16 @@ router.post('/login', (req, res) => {
       res.json('Wrong password.');
     } else {
       console.log('here');
-      res.json(user);
+      req.login(user, err => (err ? next(err) : res.json(user)));
     }
 
   })
 
+})
+
+router.get('/whoami',(req, res) => {
+  // Does the user have a session stored with us?
+  console.log('whoami', req.user);
 })
 
 

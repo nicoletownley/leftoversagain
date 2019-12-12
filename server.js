@@ -9,7 +9,6 @@ let path = require('path');
 let passport = require ('passport');
 let session = require('express-session');
 let MongoStore = require('connect-mongo')(session);
-
 //set up port for listening on designated port or 3000
 let PORT = process.env.PORT||3001;
 // express app
@@ -69,6 +68,7 @@ mongoose.connect(db, function(error) {
         console.log("mongoose is happening");
     }
 });
+let User = require('./models/User');
 
 if (process.env.NODE_ENV === 'production') {
 	app.use(express.static('client/build'));

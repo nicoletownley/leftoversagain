@@ -16,15 +16,14 @@ class App extends Component {
     state = {user: {}};
 
     componentDidMount() {
-    const userId = localStorage.getItem('id')
-    if(userId) {
-      console.log(userId)
-      fetch(`/api/user/${userId}`)
+
+
+      fetch(`/api/user/whoami`)
         .then(res => res.json())
         .then(user => {
           this.setState({ user: user });
       });
-    }
+    
     }
 
   render() {
