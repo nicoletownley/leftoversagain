@@ -6,12 +6,13 @@ const UserSchema = mongoose.Schema({
   email: { type: String },
   password: {type: String, required: true},  // hello123 -> sfafa04218491fasfannafanskxcnaxkn
   firstName: {type: String},
-  lastName: {type: String}
+  lastName: {type: String},
+  points: {type:Number, default: 0,},
 });
 
 
 //
-UserSchema.pre("save", (next) => {
+UserSchema.pre("save", function(next) {
     const user = this;
     const saltRounds = 10;
 
@@ -25,6 +26,10 @@ UserSchema.pre("save", (next) => {
     next();
   });
 });
+
+UserSchema.methods.comparePassword = function (password) {
+  return bcrypt.compareSync(password, this.password);
+};
 
 const User = mongoose.model('User', UserSchema);
 

@@ -40,6 +40,7 @@ class Signup extends Component {
         localStorage.setItem('id', user._id);
         this.props.history.push('/');
       })
+      .catch(err => console.log(err));
 
 
   }

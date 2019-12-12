@@ -32,6 +32,7 @@ router.post('/signup', (req, res) => {
   .then(user => {
     res.json(user);
   })
+  .catch(err => console.log(err));
 
 })
 
@@ -43,14 +44,18 @@ router.post('/login', (req, res) => {
 
   User.findOne({
     email: email,
-    password: password,
   })
   .then(user => {
     console.log(user);
     if(!user) {
       res.json('User not found!')
+    } else if (user.comparePassword(password) === false ) {
+      res.json('Wrong password.');
+    } else {
+      console.log('here');
+      res.json(user);
     }
-    res.json(user);
+
   })
 
 })
