@@ -14,7 +14,10 @@ class Gallery extends Component {
       user: {}
     }
   }
-
+  handleClick(e){
+    e.preventDefault();
+    console.log("I clicked the image");
+  }
   componentDidMount() {
   
     fetch('/api/item')
@@ -29,7 +32,7 @@ class Gallery extends Component {
     return (
       <div class="pgallery">
         {this.state.perfumes.map((perfume, i) => (
-          <Perfume perfume={perfume} url={this.state.images[i]} />
+          <Perfume perfume={perfume} url={this.state.images[i]} onClick={this.handleClick} />
         ))}
       </div>
     )
