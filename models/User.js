@@ -11,6 +11,20 @@ const UserSchema = mongoose.Schema({
 
 
 //
+UserSchema.pre("save", (next) => {
+    const user = this;
+    const saltRounds = 10;
+
+  // only hash the password if it has been modified (or is new)
+  if (!user.isModified('password')) return next();
+
+
+  // Proper syntax needed for encrypting a password, we salt it (append some random letters) and then hash it.
+  bcrypt.hash(user.password, saltRounds, (err, hash) => {
+    user.password = hash;
+    next();
+  });
+});
 
 const User = mongoose.model('User', UserSchema);
 

@@ -27,6 +27,7 @@ router.post('/signup', (req, res) => {
   User.create({
     email: email,
     password: password,
+    
   })
   .then(user => {
     res.json(user);
