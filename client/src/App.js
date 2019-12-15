@@ -26,14 +26,13 @@ class App extends Component {
   }
 
   render() {
-    console.log('This is my user', this.state.user)
     return (
 
       <div>
         <Navbar user={this.state.user} />
         <Switch>
           <Route exact path="/signup" component={Signup} />
-          <Route exact path="/" component={Gallery} />
+          <Route exact path="/" render={(props) => <Gallery user={this.state.user}/>} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/add" component={AddPerfume} />
           {/* <Route exact path="/cart" component={Cart}/>

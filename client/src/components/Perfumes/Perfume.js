@@ -7,7 +7,12 @@ import clinique from '../../Images/clinique.jpg';
 import kk from '../../Images/kk.jpg';
 import miumiu from '../../Images/miumiu.jpg';
 
-const Perfume = (props) => (
+const Perfume = (props) =>  {
+console.log('User?', props.user);
+  console.log(Object.keys(props.user).length > 0);
+
+
+return(
   <Card>
     <Image src={kk} wrapped ui={false} />
     <Card.Content>
@@ -23,8 +28,15 @@ const Perfume = (props) => (
       <a>
         {props.perfume.oz} Oz.
       </a>
+      {Object.keys(props.user).length > 0 && props.user.items.includes(props.perfume._id) ? 
+      <button> Delete </button> 
+      : 
+      null
+    
+      }
     </Card.Content>
   </Card>
 )
+    }
 
 export default Perfume

@@ -54,6 +54,7 @@ router.post('/login', (req, res, next) => {
   User.findOne({
     email: email,
   })
+  .populate('items')
   .then(user => {
     console.log(user);
     if(!user) {

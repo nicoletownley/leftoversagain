@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Item = require('../../models/Item.js');  
+const User = require('../../models/User.js');  
 
 // GET All items
 
@@ -38,7 +39,18 @@ router.post('/', (req, res) => {
     oz,
   })
     .then(item => {
-      res.json(item);
+   
+
+      User.update(
+        { _id: req.user._id },
+        { $push: { items: item._id} },
+        (error, success) => {
+          res.json(item);
+        }
+      )
+
+
+
     })
 
   })

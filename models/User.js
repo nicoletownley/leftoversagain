@@ -8,6 +8,7 @@ const UserSchema = mongoose.Schema({
   firstName: {type: String},
   lastName: {type: String},
   points: {type:Number, default: 0,},
+  items: [{type: mongoose.Schema.Types.ObjectId, ref: 'Item'}]
 });
 
 

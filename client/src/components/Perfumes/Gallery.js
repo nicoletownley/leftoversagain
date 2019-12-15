@@ -11,7 +11,7 @@ class Gallery extends Component {
     this.state = {
       perfumes: [{}, {}, {}, {}],
       images: ['2787', 'bvlgari', 'Chloe', 'clinique','kk', 'miumiu'],
-      user: {}
+
     }
   }
  
@@ -29,7 +29,7 @@ class Gallery extends Component {
     return (
       <div class="pgallery">
         {this.state.perfumes.map((perfume, i) => (
-          <Perfume perfume={perfume} url={this.state.images[i]}  />
+          <Perfume perfume={perfume} url={this.state.images[i]} user={this.props.user}  />
         ))}
       </div>
     )
