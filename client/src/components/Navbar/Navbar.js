@@ -45,6 +45,7 @@ class Navbar extends Component {
             active={activeItem === 'logout'}
             onClick={this.logoutuser}/>
             :
+            <>
             <Menu.Item
               name='login'
               as={Link}
@@ -52,7 +53,6 @@ class Navbar extends Component {
               active={activeItem === 'login'}
               onClick={this.handleItemClick}
             />
-          }
             <Menu.Item
               name='signup'
               as={Link}
@@ -60,6 +60,8 @@ class Navbar extends Component {
               active={activeItem === 'signup'}
               onClick={this.handleItemClick}
             />
+            </>
+          }
             
           </Menu.Menu>
         </Menu>

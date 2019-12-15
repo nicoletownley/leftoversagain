@@ -24,6 +24,15 @@ router.post('/signup', (req, res, next) => {
   const password = req.body.password;
   console.log(req.body);
 
+  User.find({
+    email: req.body.email
+  })
+  .then(user => {
+    if(user.length > 0) {
+      res.json('Email already exists!');
+    }
+  })
+
   User.create({
     email: email,
     password: password,

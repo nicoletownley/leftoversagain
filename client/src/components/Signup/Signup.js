@@ -8,7 +8,8 @@ class Signup extends Component {
     this.state = {
       email: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      error: ''
     }
   }
 
@@ -16,7 +17,6 @@ class Signup extends Component {
   // This only is for quick response from the backend. When the user puts in a password. It lets them know right away (sooner)
   // the pasword may be wrong. Remove if not necssary for authentication.
   onChange = (event) => {
-    console.log(event.target.value);
     this.setState({[event.target.name]: event.target.value})
   }
 
@@ -25,6 +25,7 @@ class Signup extends Component {
   // Function that will communicate our backend and sign them up. 
   onSubmit = (e) => {
     if (this.state.password !== this.state.confirmPassword) {
+      this.setState({error: 'Passwords must match!'})
       return;
     }
 
@@ -37,8 +38,13 @@ class Signup extends Component {
     })
       .then(res => res.json())
       .then(user => {
-        localStorage.setItem('id', user._id);
-        this.props.history.push('/');
+        if (user == 'Email already exists!') {
+          this.setState({error: 'E-mail already exists!'});
+        } else {
+
+          localStorage.setItem('id', user._id);
+          window.location.href = '/';
+        }
       })
       .catch(err => console.log(err));
 
@@ -50,11 +56,12 @@ class Signup extends Component {
       <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='teal' textAlign='center'>
+            {this.state.error ? <div className="error"> {this.state.error}</div> : null}
             <Image src='/logo.png' /> Signup
       </Header>
           <Form size='large' onSubmit={this.onSubmit}>
             <Segment stacked>
-              <Form.Input type="email" name="email" fluid icon='user' iconPosition='left' placeholder='E-mail address' onChange={this.onChange}/>
+              <Form.Input type="email" name="email" fluid icon='user' iconPosition='left' placeholder='E-mail address' required onChange={this.onChange}/>
               <Form.Input
                 fluid
                 icon='lock'
@@ -62,6 +69,7 @@ class Signup extends Component {
                 placeholder='Password'
                 type='password'
                 name="password"
+                required
                 onChange={this.onChange}
               />
               <Form.Input
@@ -71,6 +79,7 @@ class Signup extends Component {
                 placeholder='Confirm Password'
                 type='password'
                 name="confirmPassword"
+                required
                 onChange={this.onChange}
               />
 
