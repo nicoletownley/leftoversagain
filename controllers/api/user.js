@@ -63,7 +63,18 @@ router.post('/login', (req, res, next) => {
 router.get('/whoami',(req, res) => {
   // Does the user have a session stored with us?
   console.log('whoami', req.user);
+  if (!req.user) {
+    res.json({})
+  }
+  res.json(req.user)
+  
 })
+
+router.get('/logout',(req, res) => {
+  // Does the user have a session stored with us?
+ req.logout ();
+res.json ('Successfully Logged Out')
+});
 
 
 module.exports = router;

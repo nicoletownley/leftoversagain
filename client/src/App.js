@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
@@ -8,43 +8,43 @@ import Perfume from './components/Perfumes/Perfume';
 import Gallery from './components/Perfumes/Gallery';
 import NotFound from './components/NotFound/NotFound';
 import AddPerfume from './components/Perfumes/AddPerfume';
-import {BrowserRouter as Router, Switch, Route, Link,withRouter} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Link, withRouter } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
 
 class App extends Component {
 
-    state = {user: {}};
+  state = { user: {} };
 
-    componentDidMount() {
+  componentDidMount() {
 
-
-      fetch(`/api/user/whoami`)
-        .then(res => res.json())
-        .then(user => {
-          this.setState({ user: user });
+    fetch(`/api/user/whoami`)
+      .then(res => res.json())
+      .then(user => {
+        this.setState({ user: user });
       });
-    
-    }
+
+  }
 
   render() {
-  return (
-    <div className="App">
-      <Router>
-        <Navbar />
+    console.log('This is my user', this.state.user)
+    return (
+
+      <div>
+        <Navbar user={this.state.user} />
         <Switch>
           <Route exact path="/signup" component={Signup} />
-          <Route exact path="/" component={Gallery} /> 
+          <Route exact path="/" component={Gallery} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/add" component={AddPerfume} />
           {/* <Route exact path="/cart" component={Cart}/>
           <Route exact path="/search" component={Search} /> */}
           <Route component={NotFound} />
         </Switch>
-      </Router>
+      </div>
 
-    </div>
-  );
-        }
+
+    );
+  }
 }
 
-export default App;
+export default withRouter(App);

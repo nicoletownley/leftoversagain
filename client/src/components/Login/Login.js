@@ -8,6 +8,7 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
+      error: ''
     }
   }
 
@@ -18,8 +19,6 @@ class Login extends Component {
 
   // Function that will communicate our backend and sign them up 
   onSubmit = (e) => {
-    console.log('??')
-    
     fetch('/api/user/login', {
       method: 'POST',
       headers: {
@@ -29,9 +28,12 @@ class Login extends Component {
     })
       .then(res => res.json())
       .then(user => {
-        console.log(user);
-        localStorage.setItem('id', user._id);
-        this.props.history.push('/');
+        if (user == 'User not found!' || user ==  'Wrong password.') {
+          this.setState({error: 'Username/Password is incorrect.'})
+        } else {
+          localStorage.setItem('id', user._id);
+          window.location.href = '/';
+        }
       })
       .catch(err => console.log('cant find'))
 
@@ -40,9 +42,12 @@ class Login extends Component {
 
   render() {
     return (
+      <div>
+        
       <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='teal' textAlign='center'>
+              {this.state.error ? <div className="error"> {this.state.error}</div> : null}
             <Image src='/logo.png' /> Login
           </Header>
           <Form size='large' onSubmit={this.onSubmit}>
@@ -69,6 +74,7 @@ class Login extends Component {
           </Message>
         </Grid.Column>
       </Grid>
+      </div>
     )
   }
 

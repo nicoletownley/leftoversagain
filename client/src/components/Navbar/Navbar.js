@@ -6,11 +6,18 @@ class Navbar extends Component {
   state = { activeItem: 'home' }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+  logoutuser = () => {
+    fetch ('/api/user/logout').then(res => {
+      window.location.href = '/login';
+
+    })
+  }
 
   render() {
     const { activeItem } = this.state
-
+    console.log('what are my props', this.props);
     return (
+      
       <div>
         <Menu pointing>
           <Menu.Item
@@ -31,13 +38,13 @@ class Navbar extends Component {
             <Menu.Item>
               <Input icon='search' placeholder='Search...' />
             </Menu.Item>
+            {Object.keys(this.props.user).length > 0 ?
+            
             <Menu.Item
-              name='signup'
-              as={Link}
-              to="/signup"
-              active={activeItem === 'signup'}
-              onClick={this.handleItemClick}
-            />
+            name='logout'
+            active={activeItem === 'logout'}
+            onClick={this.logoutuser}/>
+            :
             <Menu.Item
               name='login'
               as={Link}
@@ -45,6 +52,15 @@ class Navbar extends Component {
               active={activeItem === 'login'}
               onClick={this.handleItemClick}
             />
+          }
+            <Menu.Item
+              name='signup'
+              as={Link}
+              to="/signup"
+              active={activeItem === 'signup'}
+              onClick={this.handleItemClick}
+            />
+            
           </Menu.Menu>
         </Menu>
 
