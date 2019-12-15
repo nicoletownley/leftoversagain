@@ -55,4 +55,11 @@ router.post('/', (req, res) => {
 
   })
 
+  router.delete('/delete/:id', (req, res) => {
+    Item.findByIdAndRemove(req.params.id)
+      .then(item => {
+        res.json('Item successfully deleted');
+      })
+  })
+
   module.exports = router;

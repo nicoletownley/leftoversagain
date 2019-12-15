@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Icon, Image } from 'semantic-ui-react'
+import { Card, Icon, Image, Button } from 'semantic-ui-react'
 
 import bvlgari from '../../Images/bvlgari.jpg';
 import Chloe from '../../Images/Chloe.JPG';
@@ -29,7 +29,7 @@ return(
         {props.perfume.oz} Oz.
       </a>
       {Object.keys(props.user).length > 0 && props.user.items.includes(props.perfume._id) ? 
-      <button> Delete </button> 
+      <Button onClick={() => props.deletePerfume(props.perfume._id)}> Delete </Button> 
       : 
       null
     
