@@ -25,6 +25,7 @@ class Gallery extends Component {
       const perfumes = this.state.perfumes;
       perfumes.splice(perfumeIndex, 1);
       this.setState({perfumes: perfumes});
+      window.location.replace('htps://stark-cliffs-11408.herokuapp.com');
     })
     
   }
