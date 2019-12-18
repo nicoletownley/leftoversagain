@@ -1,6 +1,6 @@
 import React, { Component} from 'react'
 import { Input, Menu, Segment } from 'semantic-ui-react'
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 
 class Navbar extends Component {
   state = { activeItem: 'home' }
@@ -8,7 +8,9 @@ class Navbar extends Component {
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
   logoutuser = () => {
     fetch ('/api/user/logout').then(res => {
-      window.location.href = '/login';
+      localStorage.removeItem('id');
+      this.props.history.push('/login');
+      //window.location.href = '/login';
 
     })
   }
@@ -26,19 +28,24 @@ class Navbar extends Component {
             to="/"
             active={activeItem === 'home'}
             onClick={this.handleItemClick}
-          />       
+          />      
+
+          {Object.keys(this.props.user).length > 0 ?   
           <Menu.Item
             name="Add Perfume"
             as={Link}
             to="/add"
             active={activeItem === 'add'}
             onClick={this.handleItemClick}
-          />       
+          />      
+          :
+          null
+          } 
           <Menu.Menu position='right'>  
             <Menu.Item>
               <Input icon='search' placeholder='Search...' />
             </Menu.Item>
-            {Object.keys(this.props.user).length > 0 ?
+            {Object.keys(this.props.user).length > 0 ? 
             
             <Menu.Item
             name='logout'
@@ -74,4 +81,4 @@ class Navbar extends Component {
   }
 }
     
-export default Navbar;
+export default withRouter(Navbar);
