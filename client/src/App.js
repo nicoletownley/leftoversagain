@@ -13,28 +13,45 @@ import 'semantic-ui-css/semantic.min.css';
 
 class App extends Component {
 
-  state = { user: {} };
+  state = { user: {}, perfumes: [] };
 
   componentDidMount() {
-
+    console.log(this.props);
     fetch(`/api/user/whoami`)
       .then(res => res.json())
       .then(user => {
         this.setState({ user: user });
       });
 
+    fetch('/api/item')
+      .then(res => res.json())
+      .then(perfumes => {
+        console.log(perfumes);
+        this.setState({ perfumes: perfumes });
+    })
+
+  }
+
+  setUser = user => {
+    this.setState({ user: user });
+  }
+  setPerfumes = perfumes => {
+    this.setState({ perfumes: perfumes });
+  }
+  addPerfume = perfume => {
+    this.setState({ perfumes: [...this.state.perfumes, perfume], user: {...this.state.user, items: [...this.state.user.items, perfume._id]} });
   }
 
   render() {
     return (
 
       <div>
-        <Navbar user={this.state.user} />
+        <Navbar setUser={this.setUser} user={this.state.user} />
         <Switch>
           <Route exact path="/signup" component={Signup} />
-          <Route exact path="/" render={(props) => <Gallery user={this.state.user}/>} />
+          <Route exact path="/" render={(props) => <Gallery setPerfumes={this.setPerfumes} perfumes={this.state.perfumes} user={this.state.user}/>} />
           <Route exact path="/login" component={Login} />
-          <Route exact path="/add" component={AddPerfume} />
+          <Route exact path="/add" render={(props) => <AddPerfume {...this.props} addPerfume={this.addPerfume}/>} />
           {/* <Route exact path="/cart" component={Cart}/>
           <Route exact path="/search" component={Search} /> */}
           <Route component={NotFound} />

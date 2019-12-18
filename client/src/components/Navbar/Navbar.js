@@ -9,7 +9,8 @@ class Navbar extends Component {
   logoutuser = () => {
     fetch ('/api/user/logout').then(res => {
       localStorage.removeItem('id');
-      this.props.history.push('/login');
+      this.props.setUser({});
+      this.props.history.push('/');
       //window.location.href = '/login';
 
     })
