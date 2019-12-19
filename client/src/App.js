@@ -8,6 +8,7 @@ import Perfume from './components/Perfumes/Perfume';
 import Gallery from './components/Perfumes/Gallery';
 import NotFound from './components/NotFound/NotFound';
 import AddPerfume from './components/Perfumes/AddPerfume';
+import Landing from './components/Landing';
 import { BrowserRouter as Router, Switch, Route, Link, withRouter } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
 
@@ -31,7 +32,7 @@ class App extends Component {
     })
 
   }
-
+//get the user/login and addition and deletion of perfumes to update immediately
   setUser = user => {
     this.setState({ user: user });
   }
@@ -49,7 +50,8 @@ class App extends Component {
         <Navbar setUser={this.setUser} user={this.state.user} />
         <Switch>
           <Route exact path="/signup" component={Signup} />
-          <Route exact path="/" render={(props) => <Gallery setPerfumes={this.setPerfumes} perfumes={this.state.perfumes} user={this.state.user}/>} />
+          <Route exact path="/" component={Landing} />
+          <Route exact path="/gallery" render={(props) => <Gallery setPerfumes={this.setPerfumes} perfumes={this.state.perfumes} user={this.state.user}/>} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/add" render={(props) => <AddPerfume {...this.props} addPerfume={this.addPerfume}/>} />
           {/* <Route exact path="/cart" component={Cart}/>

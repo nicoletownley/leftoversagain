@@ -43,9 +43,9 @@ class Navbar extends Component {
           null
           } 
           <Menu.Menu position='right'>  
-            <Menu.Item>
+            {/* <Menu.Item>
               <Input icon='search' placeholder='Search...' />
-            </Menu.Item>
+            </Menu.Item> */}
             {Object.keys(this.props.user).length > 0 ? 
             
             <Menu.Item

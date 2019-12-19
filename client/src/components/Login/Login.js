@@ -28,11 +28,11 @@ class Login extends Component {
     })
       .then(res => res.json())
       .then(user => {
-        if (user == 'User not found!' || user ==  'Wrong password.') {
+        if (user === 'User not found!' || user ===  'Wrong password.') {
           this.setState({error: 'Username/Password is incorrect'})
         } else {
           localStorage.setItem('id', user._id);
-          window.location.href = '/';
+          window.location.href = '/gallery';
         }
       })
       .catch(err => console.log('cant find'))

@@ -43,4 +43,4 @@ return(
 )
     }
 
-export default Perfume
+export default Perfume;

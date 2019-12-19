@@ -38,7 +38,7 @@ class Signup extends Component {
     })
       .then(res => res.json())
       .then(user => {
-        if (user == 'Email already exists!') {
+        if (user ==='Email already exists!') {
           this.setState({error: 'E-mail already exists!'});
         } else {
 

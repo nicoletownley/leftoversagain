@@ -3,4 +3,10 @@
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  
+}
+body {
+  background-image: url("/client/src/Images/Bottles.jpg");
+
+
 }
