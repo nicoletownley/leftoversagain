@@ -18,8 +18,8 @@ class Landing extends Component {
                     </div>
                 </div>
                 <div className="texty">
-                    <h1></h1>
-                </div>Save money 
+                    <h1>Luxury fragrances without the cost. Explore the advantages of our perfume exchange.</h1>
+                </div> 
             </div>
              
         )

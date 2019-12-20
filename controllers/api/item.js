@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const Item = require('../../models/Item.js');  
 const User = require('../../models/User.js');  
-
+const db  = 
 // GET All items
 
 router.get('/', (req, res) => {
@@ -60,6 +60,53 @@ router.post('/', (req, res) => {
       .then(item => {
         res.json('Item successfully deleted');
       })
+  })
+
+
+  router.post('/checkout', (req, res) => {
+    
+    console.log(req.body.sum)
+    
+    // Remove those points from user
+    db.sales.aggregate([{ $project: { item: 1, total: { $subtract: [{ $add: ["$price", "$fee"] }, "$discount"] } } }])
+    User.aggregate([
+      {$project: 
+        { _id: req.user._id, $points: { $subtract: ["$points", +req.body.sum] } }
+      }  
+    ])
+    .then(user => {
+      res.json('hello')
+    })
+
+    
+ 
+
+      // for(let i = 0; i < req.body.cart.length; i++) {
+
+    //   User.find({
+    //     items: req.body.cart[i]._id
+    //   })
+    //   .then(user => {
+    //     console.log(user)
+    //     user.points = user.points + req.body.cart[i].points;
+    //     user.save()
+    //   })
+
+    //   Item.findByIdAndRemove(req.body.cart[i]._id)
+    //     .then(() => {
+    //       console.log('successfully removed');
+    //     })
+
+    // }
+
+
+    // })
+
+
+
+
+    
+
   })
 
   module.exports = router;

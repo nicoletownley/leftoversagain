@@ -1,5 +1,5 @@
 import React, { Component} from 'react'
-import { Input, Menu, Segment } from 'semantic-ui-react'
+import { Input, Menu, Segment, Icon } from 'semantic-ui-react'
 import {Link, withRouter} from 'react-router-dom';
 
 class Navbar extends Component {
@@ -30,7 +30,13 @@ class Navbar extends Component {
             active={activeItem === 'home'}
             onClick={this.handleItemClick}
           />      
-
+          <Menu.Item
+            name="gallery"
+            as={Link}
+            to="/gallery"
+            active={activeItem === 'gallery'}
+            onClick={this.handleItemClick}
+          />      
           {Object.keys(this.props.user).length > 0 ?   
           <Menu.Item
             name="Add Perfume"
@@ -47,11 +53,25 @@ class Navbar extends Component {
               <Input icon='search' placeholder='Search...' />
             </Menu.Item> */}
             {Object.keys(this.props.user).length > 0 ? 
+            <>
+            <Menu.Item
+              name='points'
+              active={activeItem === 'points'}>
+              Points: <span> {this.props.user.points} </span>
+            </Menu.Item>
             
+
             <Menu.Item
             name='logout'
             active={activeItem === 'logout'}
             onClick={this.logoutuser}/>
+            <Menu.Item>
+              <Link to="/cart">
+                <Icon name="cart" />
+                <span> {this.props.cart.length} </span>
+              </Link>
+            </Menu.Item>
+            </>
             :
             <>
             <Menu.Item

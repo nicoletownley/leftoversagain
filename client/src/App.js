@@ -8,13 +8,14 @@ import Perfume from './components/Perfumes/Perfume';
 import Gallery from './components/Perfumes/Gallery';
 import NotFound from './components/NotFound/NotFound';
 import AddPerfume from './components/Perfumes/AddPerfume';
+import Cart from './components/Cart/Cart';
 import Landing from './components/Landing';
 import { BrowserRouter as Router, Switch, Route, Link, withRouter } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
 
 class App extends Component {
 
-  state = { user: {}, perfumes: [] };
+  state = { user: {}, perfumes: [], cart: [] };
 
   componentDidMount() {
     console.log(this.props);
@@ -31,6 +32,11 @@ class App extends Component {
         this.setState({ perfumes: perfumes });
     })
 
+    if (localStorage.getItem('cart')) {
+      const cart = JSON.parse(localStorage.getItem('cart'));
+      this.setState({cart: cart});
+    }
+
   }
 //get the user/login and addition and deletion of perfumes to update immediately
   setUser = user => {
@@ -43,19 +49,57 @@ class App extends Component {
     this.setState({ perfumes: [...this.state.perfumes, perfume], user: {...this.state.user, items: [...this.state.user.items, perfume._id]} });
   }
 
+  addToCart = perfume => {
+    this.setState({ cart: [...this.state.cart, perfume]}, () => {
+      localStorage.setItem('cart', JSON.stringify(this.state.cart));
+    });
+  }
+
+  checkOut = () => {
+    /* 
+    To checkout we need to
+    1. Make sure they have enough points, if they dont display an error
+    2. Go into our backend:
+        a. Update their points 
+        b. Delete those items
+        c. Add points to the owner's account
+    3. Clear the cart 
+    */
+
+    const sum = this.state.cart.reduce((total, perfume) => {
+      return total + perfume.points;
+    }, 0);
+
+    if (this.state.user.points < sum) {
+      this.setState({error: "Not enough points. Please adjust cart."});
+      return;
+    }
+
+    fetch('/api/item/checkout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({cart: this.state.cart, sum: sum})
+    })
+
+
+
+  }
+
   render() {
     return (
 
       <div>
-        <Navbar setUser={this.setUser} user={this.state.user} />
+        <Navbar setUser={this.setUser} user={this.state.user} cart={this.state.cart}/>
         <Switch>
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/" component={Landing} />
-          <Route exact path="/gallery" render={(props) => <Gallery setPerfumes={this.setPerfumes} perfumes={this.state.perfumes} user={this.state.user}/>} />
+          <Route exact path="/gallery" render={(props) => <Gallery addToCart={this.addToCart} setPerfumes={this.setPerfumes} perfumes={this.state.perfumes} user={this.state.user}/>} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/add" render={(props) => <AddPerfume {...this.props} addPerfume={this.addPerfume}/>} />
-          {/* <Route exact path="/cart" component={Cart}/>
-          <Route exact path="/search" component={Search} /> */}
+          <Route exact path="/cart" render={(props) => <Cart {...this.props} checkOut={this.checkOut} cart={this.state.cart} error={this.state.error}/>}/>
+          {/* <Route exact path="/search" component={Search} /> */}
           <Route component={NotFound} />
         </Switch>
       </div>

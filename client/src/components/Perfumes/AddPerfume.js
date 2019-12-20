@@ -38,7 +38,7 @@ class AddPerfume extends Component {
       .then(res => res.json())
       .then(item => {
         this.props.addPerfume(item);
-        this.props.history.push("/")
+        this.props.history.push("/gallery")
     
       })
 
