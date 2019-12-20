@@ -43,7 +43,8 @@ class Signup extends Component {
         } else {
 
           localStorage.setItem('id', user._id);
-          window.location.href = '/';
+          this.props.history.push("/gallery")
+          // window.location.href = '/';
         }
       })
       .catch(err => console.log(err));

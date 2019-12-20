@@ -70,6 +70,27 @@ router.post('/login', (req, res, next) => {
 
 })
 
+router.post('/user', (req, res, next) => {
+  // Grab all the information from the signup form
+  const email = req.body.email;
+  
+  const points = req.body.points;
+
+  User.findOne({
+    email: email,
+  })
+  .populate('items')
+  .then(user => {
+    console.log(user);
+    if(!user) {
+      res.json('User not found!')
+    } else {
+      req.login(user, err => (err ? next(err) : res.json(user)));
+    }
+
+  })
+
+})
 router.get('/whoami',(req, res) => {
   // Does the user have a session stored with us?
   console.log('whoami', req.user);

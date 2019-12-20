@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 const ItemSchema = mongoose.Schema({
   name: { type: String },
-  qty: { type: Number, required: true },  // hello123 -> sfafa04218491fasfannafanskxcnaxkn
+  email: { type: String, required: true },  // hello123 -> sfafa04218491fasfannafanskxcnaxkn
   oz: {type:Number},
   description: {type: String},
   points: {type: Number, default: 50},

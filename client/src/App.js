@@ -12,6 +12,7 @@ import Cart from './components/Cart/Cart';
 import Landing from './components/Landing';
 import { BrowserRouter as Router, Switch, Route, Link, withRouter } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
+import { set } from 'mongoose';
 
 class App extends Component {
 
@@ -53,8 +54,15 @@ class App extends Component {
     this.setState({ cart: [...this.state.cart, perfume]}, () => {
       localStorage.setItem('cart', JSON.stringify(this.state.cart));
     });
-  }
 
+   
+  }
+  deleteFromCart = id => {
+    const deleteCart = this.state.cart.filter(perfume => perfume._id !== id)
+    this.setState({ cart: deleteCart}, () => {
+      localStorage.setItem('cart', JSON.stringify(this.state.cart));
+    });
+  }
   checkOut = () => {
     /* 
     To checkout we need to
@@ -66,11 +74,12 @@ class App extends Component {
     3. Clear the cart 
     */
 
-    const sum = this.state.cart.reduce((total, perfume) => {
+    //total number of points for cart items
+    const totalCartPoints = this.state.cart.reduce((total, perfume) => {
       return total + perfume.points;
     }, 0);
 
-    if (this.state.user.points < sum) {
+    if (this.state.user.points < totalCartPoints) {
       this.setState({error: "Not enough points. Please adjust cart."});
       return;
     }
@@ -80,8 +89,25 @@ class App extends Component {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({cart: this.state.cart, sum: sum})
+      body: JSON.stringify({cart: this.state.cart, sum: totalCartPoints})
     })
+    .then(res => {
+    
+      // 1.clear the cart
+      this.setState ({
+        cart: []
+      })
+      // 2.make sure the user's points are updated'
+      this.setState ({
+        user: {...this.state.user, points: this.state.user.points - totalCartPoints }
+      })
+      // 3.update points to seller 
+
+      // 3.redirect to gallery page
+      this.props.history.push("/gallery");
+
+
+          })
 
 
 
@@ -96,9 +122,10 @@ class App extends Component {
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/" component={Landing} />
           <Route exact path="/gallery" render={(props) => <Gallery addToCart={this.addToCart} setPerfumes={this.setPerfumes} perfumes={this.state.perfumes} user={this.state.user}/>} />
-          <Route exact path="/login" component={Login} />
+          <Route exact path="/login" render={(props)=> <Login setUser={this.setUser}/>}/>
+          {/* <Route exact path="/login" component={Login} /> */}
           <Route exact path="/add" render={(props) => <AddPerfume {...this.props} addPerfume={this.addPerfume}/>} />
-          <Route exact path="/cart" render={(props) => <Cart {...this.props} checkOut={this.checkOut} cart={this.state.cart} error={this.state.error}/>}/>
+          <Route exact path="/cart" render={(props) => <Cart {...this.props} checkOut={this.checkOut} cart={this.state.cart} error={this.state.error} deleteFromCart={this.deleteFromCart}/>}/>
           {/* <Route exact path="/search" component={Search} /> */}
           <Route component={NotFound} />
         </Switch>

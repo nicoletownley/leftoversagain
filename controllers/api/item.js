@@ -25,7 +25,7 @@ router.get('/item/:id', (req, res) => {
 router.post('/', (req, res) => {
   // Grab all the information from the signup form
   const name = req.body.name;
-  const qty = req.body.qty;
+  const email = req.body.email;
   const points= req.body.points;
   const description= req.body.description;
   const oz=req.body.oz;
@@ -33,7 +33,7 @@ router.post('/', (req, res) => {
 
   Item.create({
     name,
-    qty,
+    email,
     points,
     description,
     oz,
@@ -62,35 +62,42 @@ router.post('/', (req, res) => {
       })
   })
 
-
   router.post('/checkout', (req, res) => {
     
     console.log(req.body.sum)
-    
+    console.log(req.body.cart)
     // Remove those points from user
-    db.sales.aggregate([{ $project: { item: 1, total: { $subtract: [{ $add: ["$price", "$fee"] }, "$discount"] } } }])
-    User.aggregate([
-      {$project: 
-        { _id: req.user._id, $points: { $subtract: ["$points", +req.body.sum] } }
-      }  
-    ])
+   
+    User.update(
+      {_id: req.user._id},
+      {"$inc": {"points": -parseInt(req.body.sum)}}
+    )
+    //look for the email of the user and upload their points needs to work with "each" do to asynchronicity
     .then(user => {
-      res.json('hello')
-    })
+      req.body.cart.forEach(perfume => {
+        console.log(perfume.email)
+        User.update(
+          {email: perfume.email},
+          {"$inc": {"points": parseInt(req.body.sum)}}
+        )
+        .then(user => {
+          console.log(`${user.email}: ${user.points}`)
+          res.json (user)
+        })
+      })
+      //needs response from server after done updating mongoDB
+      
+   
 
+    
+
+
+
+    })
     
  
-
-      // for(let i = 0; i < req.body.cart.length; i++) {
-
-    //   User.find({
-    //     items: req.body.cart[i]._id
-    //   })
-    //   .then(user => {
-    //     console.log(user)
-    //     user.points = user.points + req.body.cart[i].points;
-    //     user.save()
-    //   })
+  })
+      
 
     //   Item.findByIdAndRemove(req.body.cart[i]._id)
     //     .then(() => {
@@ -102,11 +109,8 @@ router.post('/', (req, res) => {
 
     // })
 
+ 
 
-
-
-    
-
-  })
+  
 
   module.exports = router;

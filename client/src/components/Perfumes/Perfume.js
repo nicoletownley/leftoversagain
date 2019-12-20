@@ -20,9 +20,9 @@ return(
     <Card.Content>
       <Card.Header>{props.perfume.name}</Card.Header>
       <Card.Meta>
-        <span className='date'>Points {props.perfume.points}</span>
+        <span className='date'>Points: {props.perfume.points}</span>
         <br></br>
-        <span className='date'>Phone {props.perfume.phone}</span>
+        <span className='date'>Email: {props.perfume.email}</span>
       </Card.Meta>
       <Card.Description>
     

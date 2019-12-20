@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 // import "./";
 class Login extends Component {
 
@@ -32,8 +32,10 @@ class Login extends Component {
         if (user === 'User not found!' || user ===  'Wrong password.') {
           this.setState({error: 'Username/Password is incorrect'})
         } else {
+          this.props.setUser(user);
           localStorage.setItem('id', user._id);
-          window.location.href = '/gallery';
+          this.props.history.push("/gallery");
+          // window.location.href = '/gallery';
         }
       })
       .catch(err => console.log('cant find'))
@@ -81,4 +83,4 @@ class Login extends Component {
 
 }
 
-export default Login;
+export default withRouter (Login);

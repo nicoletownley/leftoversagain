@@ -11,7 +11,9 @@ class Cart extends Component {
     }
 
     render() {
+      console.log (this.props.cart);
         return (
+      
           <Grid celled>
             {this.props.error && <div> {this.props.error} </div> }
             {this.props.cart.map(perfume => (
@@ -25,10 +27,10 @@ class Cart extends Component {
                   <p>{perfume.description} </p>
                   <p>Points: {perfume.points} </p>
                   <p>Oz: {perfume.oz} </p>
-                  <p>Quantity: {perfume.qty} </p>
+                  <p>Email: {perfume.email} </p>
                 </Grid.Column>
                 <Grid.Column width={1}>
-                  <Icon name="delete" />
+                  <Icon name="delete" onClick = {() => this.props.deleteFromCart(perfume._id)}/>
                 </Grid.Column>
               </Grid.Row>
             ))}

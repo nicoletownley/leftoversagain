@@ -18,7 +18,7 @@ const options = [
 class AddPerfume extends Component {
   state = {
       name: "",
-      qty: 0,
+      email: 0,
       oz: 0,
       description: "",
       points: 0,
@@ -33,7 +33,7 @@ class AddPerfume extends Component {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({name: this.state.name, qty: this.state.qty, oz: this.state.oz, description: this.state.description, points: this.state.points})
+      body: JSON.stringify({name: this.state.name, email: this.state.email, oz: this.state.oz, description: this.state.description, points: this.state.points})
     })
       .then(res => res.json())
       .then(item => {
@@ -58,8 +58,8 @@ class AddPerfume extends Component {
           />
           <Form.Field
             control={Input}
-            label='Quantity'
-            name="qty"
+            label='Email'
+            name="email"
             onChange={this.handleChange}
           />
           <Form.Field
