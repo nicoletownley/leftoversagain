@@ -9,45 +9,42 @@ import Bottles from '../../Images/Bottles.jpg'
 import miumiu from '../../Images/miumiu.jpg';
 // import leafbottle from '../../Images/leafbottle';
 
-const Perfume = (props) =>  {
-console.log('User?', props.user);
-  console.log(Object.keys(props.user).length > 0);
+const Perfume = (props) => {
 
+  return (
+    <Card>
+      <Image src={Bottles} wrapped ui={false} />
+      <Card.Content>
+        <Card.Header>{props.perfume.name}</Card.Header>
+        <Card.Meta>
+          <span className='date'>Points: {props.perfume.points}</span>
+          <br></br>
+          <span className='date'>Email: {props.perfume.email}</span>
+        </Card.Meta>
+        <Card.Description>
 
-return(
-  <Card>
-    <Image src={Bottles} wrapped ui={false} />
-    <Card.Content>
-      <Card.Header>{props.perfume.name}</Card.Header>
-      <Card.Meta>
-        <span className='date'>Points: {props.perfume.points}</span>
-        <br></br>
-        <span className='date'>Email: {props.perfume.email}</span>
-      </Card.Meta>
-      <Card.Description>
-    
-      {props.perfume.description}
-      </Card.Description>
-    </Card.Content>
-    <Card.Content extra>
+          {props.perfume.description}
+        </Card.Description>
+      </Card.Content>
+      <Card.Content extra>
 
-      <a>
-        {props.perfume.oz} Oz.
+        <a>
+          {props.perfume.oz} Oz.
       </a>
-      <div className="buttons">
-      
+        <div className="buttons">
 
-      {Object.keys(props.user).length > 0 && props.user.items.includes(props.perfume._id) ? 
-      <Button onClick={() => props.deletePerfume(props.perfume._id)}> Delete </Button> 
-      : 
-      <Button onClick={() => props.addToCart(props.perfume)}>
-        <Icon name="add to cart" />
-      </Button>
-      }
-      </div>
-    </Card.Content>
-  </Card>
-)
-    }
+
+          {Object.keys(props.user).length > 0 && props.user.items.includes(props.perfume._id) ?
+            <Button onClick={() => props.deletePerfume(props.perfume._id)}> Delete </Button>
+            :
+            <Button onClick={() => props.addToCart(props.perfume)}>
+              <Icon name="add to cart" />
+            </Button>
+          }
+        </div>
+      </Card.Content>
+    </Card>
+  )
+}
 
 export default Perfume;

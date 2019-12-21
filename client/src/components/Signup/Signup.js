@@ -42,10 +42,8 @@ class Signup extends Component {
         if (user ==='Email already exists!') {
           this.setState({error: 'E-mail already exists!'});
         } else {
-
-          localStorage.setItem('id', user._id);
+          this.props.setUser(user);
           this.props.history.push("/gallery")
-          // window.location.href = '/';
         }
       })
       .catch(err => console.log(err));

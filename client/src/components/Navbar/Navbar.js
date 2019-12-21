@@ -6,20 +6,19 @@ import "./Navbar.css"
 class Navbar extends Component {
   state = { activeItem: 'home' }
 
+  //whichever page we are on is highlighted
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+  
   logoutuser = () => {
     fetch ('/api/user/logout').then(res => {
-      localStorage.removeItem('id');
+      localStorage.removeItem('id'); // may not be necessary cause we have backend sessions
       this.props.setUser({});
       this.props.history.push('/');
-      //window.location.href = '/login';
-
     })
   }
-
+  
   render() {
     const { activeItem } = this.state
-    console.log('what are my props', this.props);
     return (
       
       <div className= 'navbar'>
@@ -95,9 +94,7 @@ class Navbar extends Component {
           </Menu.Menu>
         </Menu>
 
-        {/* <Segment>
-          <img src='https://react.semantic-ui.com/images/wireframe/paragraph.png' />
-        </Segment> */}
+      
       </div>
     )
   }

@@ -6,40 +6,41 @@ import Signup from './components/Signup/Signup';
 import Login from './components/Login/Login';
 import Perfume from './components/Perfumes/Perfume';
 import Gallery from './components/Perfumes/Gallery';
-import NotFound from './components/NotFound/NotFound';
 import AddPerfume from './components/Perfumes/AddPerfume';
 import Cart from './components/Cart/Cart';
 import Landing from './components/Landing';
 import { BrowserRouter as Router, Switch, Route, Link, withRouter } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
-import { set } from 'mongoose';
 
 class App extends Component {
 
   state = { user: {}, perfumes: [], cart: [] };
-
+// lifecycle - this function runs right when we hit our homepage
   componentDidMount() {
-    console.log(this.props);
+
+    // Grab user's information from our database session
     fetch(`/api/user/whoami`)
       .then(res => res.json())
       .then(user => {
         this.setState({ user: user });
       });
 
+    // Grab perfumes from database
     fetch('/api/item')
       .then(res => res.json())
       .then(perfumes => {
-        console.log(perfumes);
         this.setState({ perfumes: perfumes });
-    })
+      })
 
+    // Populate cart with items from our local storage
     if (localStorage.getItem('cart')) {
       const cart = JSON.parse(localStorage.getItem('cart'));
-      this.setState({cart: cart});
+      this.setState({ cart: cart });
     }
 
   }
-//get the user/login and addition and deletion of perfumes to update immediately
+  
+  //get the user/login and addition and deletion of perfumes to update immediately
   setUser = user => {
     this.setState({ user: user });
   }
@@ -47,19 +48,22 @@ class App extends Component {
     this.setState({ perfumes: perfumes });
   }
   addPerfume = perfume => {
-    this.setState({ perfumes: [...this.state.perfumes, perfume], user: {...this.state.user, items: [...this.state.user.items, perfume._id]} });
+    this.setState({ perfumes: [...this.state.perfumes, perfume], user: { ...this.state.user, items: [...this.state.user.items, perfume._id] } });
   }
-
+// automatically adds to cart and removes it from our gallery
   addToCart = perfume => {
-    this.setState({ cart: [...this.state.cart, perfume]}, () => {
+    const perfumes = this.state.perfumes;
+    const perfumeIndex = perfumes.findIndex(storePerfume => storePerfume._id === perfume._id );
+    perfumes.splice(perfumeIndex, 1);
+    this.setState({ cart: [...this.state.cart, perfume], perfumes: perfumes }, () => {
       localStorage.setItem('cart', JSON.stringify(this.state.cart));
     });
 
-   
+
   }
   deleteFromCart = id => {
     const deleteCart = this.state.cart.filter(perfume => perfume._id !== id)
-    this.setState({ cart: deleteCart}, () => {
+    this.setState({ cart: deleteCart }, () => {
       localStorage.setItem('cart', JSON.stringify(this.state.cart));
     });
   }
@@ -80,34 +84,39 @@ class App extends Component {
     }, 0);
 
     if (this.state.user.points < totalCartPoints) {
-      this.setState({error: "Not enough points. Please adjust cart."});
+      this.setState({ error: "Not enough points. Please adjust cart." });
       return;
     }
+    // Get snapshot of cart before it gets deleted
+    const cart = this.state.cart;
 
     fetch('/api/item/checkout', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({cart: this.state.cart, sum: totalCartPoints})
+      body: JSON.stringify({ cart: this.state.cart, sum: totalCartPoints })
     })
-    .then(res => {
-    
-      // 1.clear the cart
-      this.setState ({
-        cart: []
+      .then(res => {
+
+        //loops through each and removes from gallery
+        const perfumes = this.state.perfumes;
+        cart.forEach(cartPerfume => {
+          const perfumeIndex = perfumes.findIndex(perfume => perfume._id === cartPerfume._id);
+          perfumes.splice(perfumeIndex, 1);
+        })
+
+        // clear the cart and make sure the user's points are updated
+        this.setState({
+          cart: [],
+          user: { ...this.state.user, points: this.state.user.points - totalCartPoints },
+          perfumes: perfumes
+        }, () => {
+          localStorage.setItem('cart', JSON.stringify([]));
+          this.props.history.push("/gallery");
+        })
+
       })
-      // 2.make sure the user's points are updated'
-      this.setState ({
-        user: {...this.state.user, points: this.state.user.points - totalCartPoints }
-      })
-      // 3.update points to seller 
-
-      // 3.redirect to gallery page
-      this.props.history.push("/gallery");
-
-
-          })
 
 
 
@@ -117,17 +126,14 @@ class App extends Component {
     return (
 
       <div>
-        <Navbar setUser={this.setUser} user={this.state.user} cart={this.state.cart}/>
+        <Navbar setUser={this.setUser} user={this.state.user} cart={this.state.cart} />
         <Switch>
-          <Route exact path="/signup" component={Signup} />
           <Route exact path="/" component={Landing} />
-          <Route exact path="/gallery" render={(props) => <Gallery addToCart={this.addToCart} setPerfumes={this.setPerfumes} perfumes={this.state.perfumes} user={this.state.user}/>} />
-          <Route exact path="/login" render={(props)=> <Login setUser={this.setUser}/>}/>
-          {/* <Route exact path="/login" component={Login} /> */}
-          <Route exact path="/add" render={(props) => <AddPerfume {...this.props} addPerfume={this.addPerfume}/>} />
-          <Route exact path="/cart" render={(props) => <Cart {...this.props} checkOut={this.checkOut} cart={this.state.cart} error={this.state.error} deleteFromCart={this.deleteFromCart}/>}/>
-          {/* <Route exact path="/search" component={Search} /> */}
-          <Route component={NotFound} />
+          <Route exact path="/signup" render={(props) => <Signup setUser={this.setUser} />} />
+          <Route exact path="/gallery" render={(props) => <Gallery addToCart={this.addToCart} setPerfumes={this.setPerfumes} perfumes={this.state.perfumes} user={this.state.user} />} />
+          <Route exact path="/login" render={(props) => <Login setUser={this.setUser} />} />
+          <Route exact path="/add" render={(props) => <AddPerfume {...this.props} addPerfume={this.addPerfume} />} />
+          <Route exact path="/cart" render={(props) => <Cart {...this.props} checkOut={this.checkOut} cart={this.state.cart} error={this.state.error} deleteFromCart={this.deleteFromCart} />} />
         </Switch>
       </div>
 

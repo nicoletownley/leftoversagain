@@ -33,9 +33,7 @@ class Login extends Component {
           this.setState({error: 'Username/Password is incorrect'})
         } else {
           this.props.setUser(user);
-          localStorage.setItem('id', user._id);
           this.props.history.push("/gallery");
-          // window.location.href = '/gallery';
         }
       })
       .catch(err => console.log('cant find'))

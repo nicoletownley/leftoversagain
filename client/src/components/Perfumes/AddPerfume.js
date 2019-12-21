@@ -11,12 +11,6 @@ import {
 } from 'semantic-ui-react'
 import './Gallery.css'
 
-const options = [
-  { key: 'm', text: 'Male', value: 'male' },
-  { key: 'f', text: 'Female', value: 'female' },
-  { key: 'o', text: 'Other', value: 'other' },
-]
-
 class AddPerfume extends Component {
   state = {
       name: "",
@@ -77,12 +71,7 @@ class AddPerfume extends Component {
             name="oz"
             onChange={this.handleChange}
           />
-          {/* <Form.Field
-            control={Select}
-            label='Gender'
-            options={options} */}
-            {/* onChange={this.handleChange} */}
-            
+       
             <Form.Field
             control={TextArea}
             label='Description'
