@@ -26,7 +26,18 @@ You run the app by doing the following:
  
 
 # **__Technology Used:__**
-+
+* React
+* JavaScript
+* JSX
+* CSS
+* Semantic
+* BCrypt
+* Passport
+* Express
+* MongoDB
+* Mongoose
+* Node.js
+
 
 # **__My Role In The App Development__**
  My role was to develop the application. I collaborated, brainstormed with other students and experts about approach and functionality.
