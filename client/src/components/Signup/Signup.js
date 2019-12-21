@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
+import "./Signup.css"
 class Signup extends Component {
 
   constructor(props) {
@@ -54,11 +55,12 @@ class Signup extends Component {
 
   render() {
     return (
+      <div className="picky">
       <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='teal' textAlign='center'>
             {this.state.error ? <div className="error"> {this.state.error}</div> : null}
-            <Image src='/logo.png' /> Signup
+          Signup
       </Header>
           <Form size='large' onSubmit={this.onSubmit}>
             <Segment stacked>
@@ -94,6 +96,7 @@ class Signup extends Component {
           </Message>
         </Grid.Column>
       </Grid>
+      </div>
     )
   }
 

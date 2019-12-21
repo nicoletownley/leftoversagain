@@ -20,7 +20,7 @@ class Cart extends Component {
 
               <Grid.Row>
                 <Grid.Column width={4}>
-                  <Image src="https://react.semantic-ui.com/images/wireframe/image.png" />
+                  <Image src="./leafbottle.jpg" />
                 </Grid.Column>
                 <Grid.Column width={11}>
                   <p>{perfume.name}</p> 

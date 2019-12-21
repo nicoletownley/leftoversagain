@@ -82,10 +82,11 @@ router.post('/', (req, res) => {
         )
         .then(user => {
           console.log(`${user.email}: ${user.points}`)
+          //needs response from server after done updating mongoDB
           res.json (user)
         })
       })
-      //needs response from server after done updating mongoDB
+      
       
    
 

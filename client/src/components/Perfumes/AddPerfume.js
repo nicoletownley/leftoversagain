@@ -7,7 +7,9 @@ import {
   Radio,
   Select,
   TextArea,
+  Image,
 } from 'semantic-ui-react'
+import './Gallery.css'
 
 const options = [
   { key: 'm', text: 'Male', value: 'male' },
@@ -47,6 +49,7 @@ class AddPerfume extends Component {
 
   render() {
     return (
+      <div className="picimage">
       <Form onSubmit={this.onSubmit}>
         <Form.Group>
           <Form.Field
@@ -68,7 +71,7 @@ class AddPerfume extends Component {
             name="points"
             onChange={this.handleChange}
           />
-          ,<Form.Field
+          <Form.Field
             control={Input}
             label='Ounces'
             name="oz"
@@ -86,12 +89,14 @@ class AddPerfume extends Component {
             name="description"
             onChange={this.handleChange}
           />
+          <Form.Field className="btn" control={Button}>Submit</Form.Field>
         </Form.Group>
     
          
          
-        <Form.Field control={Button}>Submit</Form.Field>
+        
       </Form>
+    </div>
     )
   }
 }

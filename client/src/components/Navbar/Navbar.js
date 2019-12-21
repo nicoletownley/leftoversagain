@@ -1,6 +1,7 @@
 import React, { Component} from 'react'
 import { Input, Menu, Segment, Icon } from 'semantic-ui-react'
 import {Link, withRouter} from 'react-router-dom';
+import "./Navbar.css"
 
 class Navbar extends Component {
   state = { activeItem: 'home' }
@@ -21,7 +22,7 @@ class Navbar extends Component {
     console.log('what are my props', this.props);
     return (
       
-      <div>
+      <div className= 'navbar'>
         <Menu pointing>
           <Menu.Item
             name="home"
