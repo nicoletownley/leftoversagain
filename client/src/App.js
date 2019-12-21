@@ -103,7 +103,9 @@ class App extends Component {
         const perfumes = this.state.perfumes;
         cart.forEach(cartPerfume => {
           const perfumeIndex = perfumes.findIndex(perfume => perfume._id === cartPerfume._id);
-          perfumes.splice(perfumeIndex, 1);
+          if (perfumeIndex > -1) {
+            perfumes.splice(perfumeIndex, 1);
+          }
         })
 
         // clear the cart and make sure the user's points are updated
@@ -129,7 +131,7 @@ class App extends Component {
         <Navbar setUser={this.setUser} user={this.state.user} cart={this.state.cart} />
         <Switch>
           <Route exact path="/" component={Landing} />
-          <Route exact path="/signup" render={(props) => <Signup setUser={this.setUser} />} />
+          <Route exact path="/signup" render={(props) => <Signup history={this.props.history} setUser={this.setUser} />} />
           <Route exact path="/gallery" render={(props) => <Gallery addToCart={this.addToCart} setPerfumes={this.setPerfumes} perfumes={this.state.perfumes} user={this.state.user} />} />
           <Route exact path="/login" render={(props) => <Login setUser={this.setUser} />} />
           <Route exact path="/add" render={(props) => <AddPerfume {...this.props} addPerfume={this.addPerfume} />} />
