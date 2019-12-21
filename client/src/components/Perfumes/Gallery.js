@@ -25,7 +25,7 @@ class Gallery extends Component {
       <div className= "pickMe">
       <div className="pgallery">
         {this.props.perfumes.map((perfume, i) => (
-          <Perfume addToCart={this.props.addToCart} perfume={perfume} url={this.state.images[i]} user={this.props.user} deletePerfume={this.deletePerfume} />
+          <Perfume addToCart={this.props.addToCart} perfume={perfume} user={this.props.user} deletePerfume={this.deletePerfume} />
         ))}
       </div>
       </div>

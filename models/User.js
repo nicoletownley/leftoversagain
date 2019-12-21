@@ -7,12 +7,12 @@ const UserSchema = mongoose.Schema({
   password: {type: String, required: true},  // hello123 -> sfafa04218491fasfannafanskxcnaxkn
   firstName: {type: String},
   lastName: {type: String},
-  points: {type:Number, default: 0,},
+  points: {type:Number, default: 500},
   items: [{type: mongoose.Schema.Types.ObjectId, ref: 'Item'}]
 });
 
 
-//
+// Before we save the user, make sure we hash the password
 UserSchema.pre("save", function(next) {
     const user = this;
     const saltRounds = 10;
@@ -21,7 +21,7 @@ UserSchema.pre("save", function(next) {
   if (!user.isModified('password')) return next();
 
 
-  // Proper syntax needed for encrypting a password, we salt it (append some random letters) and then hash it.
+  // encrypting process: salting and hashing passord.
   bcrypt.hash(user.password, saltRounds, (err, hash) => {
     user.password = hash;
     next();

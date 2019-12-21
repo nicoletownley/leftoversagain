@@ -7,7 +7,7 @@ const ItemSchema = mongoose.Schema({
   email: { type: String, required: true },  // hello123 -> sfafa04218491fasfannafanskxcnaxkn
   oz: {type:Number},
   description: {type: String},
-  points: {type: Number, default: 50},
+  points: {type: Number, default: 0},
 });
  
 

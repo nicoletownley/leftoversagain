@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const Item = require('../../models/Item.js');  
-const User = require('../../models/User.js');  
-const db  = 
+const Item = require('../../models/Item.js');
+const User = require('../../models/User.js');
+
 // GET All items
 
 router.get('/', (req, res) => {
@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 })
 
 
-// User hits /item
+// might use in next feature of app
 
 router.get('/item/:id', (req, res) => {
   Item.find({ _id: req.params.id })
@@ -22,14 +22,16 @@ router.get('/item/:id', (req, res) => {
       res.json(item);
     })
 })
+
+// Grab all the information from the add perfume form
 router.post('/', (req, res) => {
-  // Grab all the information from the signup form
+
   const name = req.body.name;
   const email = req.body.email;
-  const points= req.body.points;
-  const description= req.body.description;
-  const oz=req.body.oz;
-  
+  const points = req.body.points;
+  const description = req.body.description;
+  const oz = req.body.oz;
+
 
   Item.create({
     name,
@@ -39,79 +41,68 @@ router.post('/', (req, res) => {
     oz,
   })
     .then(item => {
-   
 
+      //after we add perfume make sure we add the perfume's id to the user's list of perfumes
       User.update(
         { _id: req.user._id },
-        { $push: { items: item._id} },
+        { $push: { items: item._id } },
         (error, success) => {
           res.json(item);
         }
       )
-
-
-
     })
 
-  })
+})
 
-  router.delete('/delete/:id', (req, res) => {
-    Item.findByIdAndRemove(req.params.id)
-      .then(item => {
-        res.json('Item successfully deleted');
-      })
-  })
+//allows only the user who added their perfume to delete it
+router.delete('/delete/:id', (req, res) => {
+  Item.findByIdAndRemove(req.params.id)
+    .then(item => {
+      res.json('Item successfully deleted');
+    })
+})
 
-  router.post('/checkout', (req, res) => {
-    
-    console.log(req.body.sum)
-    console.log(req.body.cart)
-    // Remove those points from user
-   
-    User.update(
-      {_id: req.user._id},
-      {"$inc": {"points": -parseInt(req.body.sum)}}
-    )
+/*
+1.Update their points
+2.Delete those items
+3.Add points to the owner's account
+*/
+router.post('/checkout', (req, res) => {
+
+
+  // Remove those points from user
+
+  User.update(
+    { _id: req.user._id },
+    { "$inc": { "points": -parseInt(req.body.sum) } }
+  )
     //look for the email of the user and upload their points needs to work with "each" do to asynchronicity
     .then(user => {
       req.body.cart.forEach(perfume => {
-        console.log(perfume.email)
         User.update(
-          {email: perfume.email},
-          {"$inc": {"points": parseInt(req.body.sum)}}
+          { email: perfume.email },
+          { "$inc": { "points": parseInt(req.body.sum) } }
         )
-        .then(user => {
-          console.log(`${user.email}: ${user.points}`)
-          //needs response from server after done updating mongoDB
-          res.json (user)
-        })
+          .then(user => {
+            //needs response from server after done updating mongoDB
+          })
+
       })
-      
-      
-   
 
-    
-
-
-
+      req.body.cart.forEach(perfume => {
+        Item.deleteOne({ _id: perfume._id })
+          .then(item => {
+            res.json('Successfully deleted');
+          })
+      })
     })
-    
- 
-  })
-      
-
-    //   Item.findByIdAndRemove(req.body.cart[i]._id)
-    //     .then(() => {
-    //       console.log('successfully removed');
-    //     })
-
-    // }
 
 
-    // })
 
- 
+})
 
-  
 
-  module.exports = router;
+
+
+
+module.exports = router;

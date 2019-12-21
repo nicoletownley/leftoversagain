@@ -60,7 +60,7 @@ app.use('/api/item', itemRoutes);
 //if deployed use that database otherwise use mongose
 let db = process.env.MONGODB_URI || "mongodb://localhost:27017/leftovers";
 //connect mongose to our database
-mongoose.connect(db, function(error) {
+mongoose.connect(db,{useNewUrlParser: true}, function(error) {
     if (error) {
         console.log (error);
     }

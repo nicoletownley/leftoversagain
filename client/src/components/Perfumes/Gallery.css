@@ -1,6 +1,6 @@
 .pgallery {
   width: 90%;
-  margin: 0 auto;
+  margin: 2em auto;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   
@@ -10,14 +10,13 @@
     background-image:url("https://images.unsplash.com/photo-1533017568856-f6085fef5f1f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60");
     background-size: cover;
     height: 100vh;
-    margin-top: 15px;
   }
 
  .picimage  {
    width: 100%;
    background-image:url("https://images.unsplash.com/photo-1525101739743-4cd8ca930171?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60");
    background-size: cover;
-   height: 2000px;
+   height: 100vh;
  }
  .btn {
    padding: 20px;
